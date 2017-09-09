@@ -1,1 +1,1 @@
-web : python goodybot.py
+web: python goodybot.py
