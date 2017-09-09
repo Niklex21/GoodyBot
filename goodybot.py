@@ -31,18 +31,29 @@ class BotHandler:
  
         return last_update
 
-goodyBot = BotHandler("406615403:AAEsQPhX9-rGqPd6ApJo7qYtlG5Wuq459s8")
+    def get_random_message(self):
+        updates = self.get_updates()
+        randMsg = updates[random.randint(0, len(updates) - 1)]
+        i = 0
 
-now = datetime.datetime.now()
+        while ('goody' in randMsg['message']['text'] or 'гуди' in randMsg['message']['text']) and i < len(updates):
+            randMsg = updates[random.randint(0, len(updates) - 1)]
+            i+=1
+        
+        if i == len(updates):
+            return 'NaN'
+        else:
+            return randMsg['message']['text']
+
+goodyBot = BotHandler("406615403:AAEsQPhX9-rGqPd6ApJo7qYtlG5Wuq459s8")
 
 greetings = ('Hi', 'HI', 'Hey', "What's up?", "How RU?")
 
 def main():
     new_offset = None
+    TEST_MESSAGE = 'Hi'
+    used = []
     
-    today = now.day
-    hour = now.hour
-
     while True:
         goodyBot.get_updates(new_offset)
  
@@ -53,9 +64,14 @@ def main():
         last_chat_id = last_update['message']['chat']['id']
         last_chat_name = last_update['message']['chat']['first_name']
 
-        message = last_chat_text
+        message = goodyBot.get_random_message()
 
-        goodyBot.send_message(last_chat_id, message)
+        if ('goody' in last_chat_text.lower() or 'гуди' in last_chat_text.lower().split()) and not (last_update_id in used):
+            if message == 'NaN':
+                goodyBot.send_message(last_chat_id, TEST_MESSAGE)
+            else:
+                goodyBot.send_message(last_chat_id, message)
+                used.append(last_update_id)
 
 if __name__ == '__main__' :
 	try:
