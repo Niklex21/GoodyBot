@@ -53,14 +53,9 @@ def main():
         last_chat_id = last_update['message']['chat']['id']
         last_chat_name = last_update['message']['chat']['first_name']
 
-        if last_chat_text in greetings:
-            message = greetings[random.randint(0, len(greetings) - 1)]
-        else:
-            message = "I do not understand you :("
+        message = last_chat_text
 
         goodyBot.send_message(last_chat_id, message)
-
-        new_offset = last_update_id + 1
 
 if __name__ == '__main__' :
 	try:
