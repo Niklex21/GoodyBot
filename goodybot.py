@@ -46,7 +46,6 @@ def main():
         last_update = goodyBot.get_last_update()
  
         last_update_id = last_update['update_id']
-<<<<<<< HEAD
         last_chat_text = last_update['message']['text'] or 'None'
         last_chat_id = last_update['message']['chat']['id'] or 'None'
         
@@ -57,11 +56,6 @@ def main():
             allMsg = allMsg[1:]
             if last_chat_text != 'None' and not (last_chat_text in allMsg):
                 allMsg.append(last_chat_text)
-=======
-        last_chat_text = last_update['message']['text']
-        last_chat_id = last_update['message']['chat']['id']
-        #last_chat_name = last_update['message']['chat']['first_name']
->>>>>>> 0bace003da5e04f0b0b8e41fc4945b183a771767
 
         message = allMsg[random.randint(0, len(allMsg) - 1)]
 
