@@ -45,7 +45,7 @@ def main():
  
         last_update = goodyBot.get_last_update()
  
-        last_update_id = int(last_update['update_id'])
+        last_update_id = int(last_update['update_id']) or 'None'
         last_chat_text = last_update['message']['text'] or 'None'
         last_chat_id = int(last_update['message']['chat']['id']) or 'None'
         
