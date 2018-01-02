@@ -1,2 +1,2 @@
-# goodybot
-A chat bot for Telegram
+# GoodyBot
+A chat bot for Telegram Messenger
