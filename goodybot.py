@@ -32,6 +32,12 @@ class BotHandler:
  
         return last_update
 
+    def pin_message(self, chat_id, message_id):
+        params = {'chat_id' : chat_id, 'message_id' : message_id, 'disable_notification' : False}
+        method  = 'pinChatMessage'
+        resp = requests.post(self.api_url + method, params)
+        return resp
+
 goodyBot = BotHandler("416682801:AAF4QDGbapfRccmaA6xyR7YgTntovnBn0m0")
 
 def main():
@@ -43,7 +49,6 @@ def main():
 
 # --- Vars declarattion --- #
     new_offset = None
-    used = []
     allMsg = []
     
     while True:
@@ -53,16 +58,18 @@ def main():
         
         if last_update != None:
         # --- last_update initializers --- #
-            try :
+            try:
                 last_chat_text = last_update['message']['text']
             except:
                 last_chat_text = None
             try:
                 last_update_id = int(last_update['update_id'])
                 last_chat_id = int(last_update['message']['chat']['id'])
+                last_message_id = int(last_update['message']['message_id'])
             except:
                 last_update_id = None
                 last_chat_id = None
+                last_message_id = None
             
             if last_chat_text != None:
             # --- Writing new messages to dictionary --- #
@@ -89,11 +96,18 @@ def main():
                         goodyBot.send_message(last_chat_id, TEST_MESSAGE)
                     else:
                     	goodyBot.send_message(last_chat_id, message)
-                    	used.append(last_update_id)
 
                 if ('#idea' in words or '#идея' in words) or ('#bug' in words or '#баг' in words) or ('леха' in words or 'леша' in words or 'лех' in words or 'леш' in words):
                     goodyBot.send_message(CREATOR_CHAT_ID, last_chat_text)
-                    
+
+                if '\pin' in words:
+                    try: 
+                        replied_message = last_update["message"]["reply_to_message"]
+                        replied_message_id = replied_message["message_id"]
+                        goodyBot.pin_message(last_chat_id, replied_message_id)
+                    except:
+                        goodyBot.pin_message(last_chat_id, last_message_id)
+
                 new_offset = last_update_id + 1
 
 if __name__ == '__main__' :
